@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model Lead {
+  id String @id @default(cuid())
+  name String
+  email String
+  phone String?
+  message String
+  source String @default("website")
+  status String @default("new")
+  crmSynced Boolean @default(false)
+  createdAt DateTime @default(now())
+}
+
+model AdminUser {
+  id String @id @default(cuid())
+  email String @unique
+  passwordHash String
+  name String?
+  createdAt DateTime @default(now())
+}
+
+model PageContent {
+  id String @id @default(cuid())
+  key String @unique
+  title String?
+  body String
+  updatedAt DateTime @updatedAt
+}
+
+model Integration {
+  id String @id @default(cuid())
+  type String @unique
+  provider String?
+  config Json
+  enabled Boolean @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model ThreadsPost {
+  id String @id @default(cuid())
+  threadsId String @unique
+  text String?
+  mediaUrl String?
+  permalink String
+  postedAt DateTime
+  cachedAt DateTime @default(now())
+}
